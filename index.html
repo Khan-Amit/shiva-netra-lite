@@ -1,450 +1,265 @@
-<!DOCTYPE html>
-<html lang="en">
+
+             <!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
+    <title>Shiva Netra Lite</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiva Netra Lite - AI Visual Assistant</title>
-    
-    <!-- Our Script -->
-    <script defer src="script.js"></script>
     
     <style>
-        /* ========== BASE STYLES ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-        }
-        
+        /* VERY SIMPLE STYLES */
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: Arial;
+            background: #f0f0f0;
             padding: 20px;
-            color: #333;
         }
         
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        /* ========== HEADER ========== */
-        .header {
-            text-align: center;
-            padding: 40px 20px;
-            color: white;
-        }
-        
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-        
-        /* ========== CARD ========== */
-        .card {
+            max-width: 500px;
+            margin: auto;
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin-bottom: 40px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         
-        .section-title {
-            font-size: 1.8rem;
-            color: #4c51bf;
-            margin-bottom: 30px;
+        h1 {
+            color: #333;
             text-align: center;
         }
         
-        /* ========== FORM ========== */
-        .form-group {
-            margin-bottom: 25px;
+        .input-group {
+            margin: 15px 0;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #4a5568;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        /* ========== DATE DROPDOWN CONTAINER ========== */
-        .date-container {
-            display: flex;
-            gap: 10px;
             margin-bottom: 5px;
+            font-weight: bold;
         }
         
-        .date-container select {
-            flex: 1;
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
         
-        /* ========== BUTTON ========== */
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #4CAF50;
             color: white;
             border: none;
-            padding: 18px 40px;
-            font-size: 18px;
-            border-radius: 10px;
-            cursor: pointer;
+            padding: 15px;
             width: 100%;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
             margin-top: 10px;
         }
         
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            background: #45a049;
         }
         
-        /* ========== FEATURES ========== */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .feature {
-            background: #f7fafc;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-        }
-        
-        .feature-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-        
-        .feature h3 {
-            color: #4c51bf;
-            margin-bottom: 10px;
-        }
-        
-        /* ========== FOOTER ========== */
-        .footer {
-            text-align: center;
-            color: white;
-            padding: 30px;
-            opacity: 0.8;
-        }
-        
-        /* ========== MESSAGES ========== */
-        .success-message {
-            display: none;
-            background: #10b981;
-            color: white;
+        .data-box {
+            background: #f9f9f9;
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            text-align: center;
-            animation: fadeIn 0.5s;
-        }
-        
-        .data-display {
-            display: none;
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-        
-        .submission-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #667eea;
-        }
-        
-        /* ========== ANIMATIONS ========== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* ========== HELPER TEXT ========== */
-        .help-text {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 5px;
-            font-style: italic;
-        }
-        
-        /* ========== LOADER ========== */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            flex-direction: column;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        .loader-text {
             margin-top: 20px;
-            color: #333;
-            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
         }
         
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .card {
-                padding: 25px;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-            
-            .date-container {
-                flex-direction: column;
-            }
-        }
-        
-        /* ========== DATA DISPLAY ========== */
-        .data-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .data-count {
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-        
-        .clear-btn {
-            background: #ef4444 !important;
-            padding: 10px 20px !important;
-            font-size: 14px !important;
-            width: auto !important;
-            margin-top: 0 !important;
-        }
-        
-        /* ========== WELCOME MESSAGE ========== */
-        .welcome-message {
-            background: #3b82f6;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
+        .data-item {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>Shiva Netra Lite</h1>
-            <p>The Future of Personal AI Vision - Experience the world with an AI-powered visual assistant that works offline, respects your privacy, and costs nothing to run.</p>
-        </div>
+        <h1>Shiva Netra Lite</h1>
+        <p style="text-align:center;color:#666;">AI Visual Assistant - Early Access</p>
         
-        <!-- Early Access Form -->
-        <div class="card">
-            <h2 class="section-title">Get Early Access</h2>
-            <p style="text-align: center; margin-bottom: 30px; color: #4a5568;">Join the exclusive early access list for Shiva Netra Lite. Be among the first to experience personal AI vision.</p>
-            
-            <!-- Welcome Back Message -->
-            <div id="welcomeMessage" class="welcome-message">
-                <h3 style="margin-bottom: 5px;">👋 Welcome Back!</h3>
-                <p>We found your previous submission. Thank you for your interest!</p>
+        <!-- SIMPLE FORM -->
+        <form id="myForm">
+            <div class="input-group">
+                <label>Your Name *</label>
+                <input type="text" id="userName" required placeholder="Enter your name">
             </div>
             
-            <form id="earlyAccessForm">
-                <!-- Name -->
-                <div class="form-group">
-                    <label for="name">Full Name *</label>
-                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
-                </div>
-                
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required placeholder="you@example.com">
-                </div>
-                
-                <!-- Phone -->
-                <div class="form-group">
-                    <label for="phone">Phone Number (Optional)</label>
-                    <input type="tel" id="phone" name="phone" placeholder="+1 (123) 456-7890">
-                </div>
-                
-                <!-- FULL DATE: Day, Month, Year -->
-                <div class="form-group">
-                    <label for="birthDate">Birth Date (Optional)</label>
-                    <div class="date-container">
-                        <!-- Day -->
-                        <select id="birthDay" name="birthDay">
-                            <option value="">Day</option>
-                            <!-- Days 1-31 will be populated by JavaScript -->
-                        </select>
-                        
-                        <!-- Month -->
-                        <select id="birthMonth" name="birthMonth">
-                            <option value="">Month</option>
-                            <!-- Months will be populated by JavaScript -->
-                        </select>
-                        
-                        <!-- Year -->
-                        <select id="birthYear" name="birthYear">
-                            <option value="">Year</option>
-                            <!-- Years 1900-current will be populated by JavaScript -->
-                        </select>
-                    </div>
-                    <div class="help-text">We ask for birth date to personalize your experience (optional)</div>
-                </div>
-                
-                <!-- Interest -->
-                <div class="form-group">
-                    <label for="interest">Primary Interest (Optional)</label>
-                    <select id="interest" name="interest">
-                        <option value="general">General Use</option>
-                        <option value="accessibility">Accessibility Support</option>
-                        <option value="productivity">Productivity Enhancement</option>
-                        <option value="education">Educational Purposes</option>
-                        <option value="research">Research & Development</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <!-- Submit Button -->
-                <button type="submit">Get Early Access</button>
-            </form>
-            
-            <!-- Success Message -->
-            <div id="successMessage" class="success-message">
-                <h3 style="margin-bottom: 10px;">🎉 Thank You!</h3>
-                <p>You have been successfully added to the Shiva Netra Lite early access list.</p>
-                <p>We will contact you soon with updates.</p>
+            <div class="input-group">
+                <label>Email Address *</label>
+                <input type="email" id="userEmail" required placeholder="your@email.com">
             </div>
             
-            <!-- Data Display Area -->
-            <div id="dataDisplay" class="data-display">
-                <div class="data-header">
-                    <h3 style="margin: 0; color: #4c51bf;">📊 Recent Submissions</h3>
-                    <span id="dataCount" class="data-count">0 submissions</span>
-                </div>
-                <div id="submissionsList">
-                    <!-- Data will appear here -->
-                </div>
-                <button onclick="clearAllData()" class="clear-btn">Clear All Data</button>
+            <!-- SIMPLE DATE DROPDOWN -->
+            <div class="input-group">
+                <label>Birth Year (Optional)</label>
+                <select id="birthYear">
+                    <option value="">Select Year</option>
+                    <!-- Years will be added by JavaScript -->
+                </select>
             </div>
-        </div>
+            
+            <button type="submit">Join Early Access</button>
+        </form>
         
-        <!-- Features Section -->
-        <div class="card">
-            <h2 class="section-title">Why Shiva Netra Lite?</h2>
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Privacy First</h3>
-                    <p>All processing happens on-device. No data sent to cloud, ever.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">💰</div>
-                    <h3>No Cloud Costs</h3>
-                    <p>Zero ongoing costs. Runs entirely on your device.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Lightning Fast</h3>
-                    <p>Real-time processing with minimal latency.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🌐</div>
-                    <h3>Works Offline</h3>
-                    <p>Full functionality without internet connection.</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <p>Shiva Netra Lite &copy; 2024 | AI-Powered Visual Assistant</p>
-            <p style="margin-top: 10px; font-size: 14px;">Contact: khan.amit@example.com</p>
-            <p style="margin-top: 5px; font-size: 12px; opacity: 0.6;">Built with ❤️ by Visionary Innovators</p>
+        <!-- DATA DISPLAY AREA -->
+        <div id="dataArea" class="data-box">
+            <h3>📊 Your Data</h3>
+            <div id="dataOutput">No data yet. Submit the form above.</div>
+            <button onclick="clearData()" style="background:#f44336;margin-top:10px;">Clear All Data</button>
         </div>
     </div>
-    
-    <!-- Loader -->
-    <div id="loader">
-        <div class="spinner"></div>
-        <p class="loader-text">Processing your request...</p>
-    </div>
-    
-    <!-- Simple test script to verify page load -->
+
+    <!-- ALL JAVASCRIPT IS HERE - NO SEPARATE FILE NEEDED -->
     <script>
-        // Quick test to verify page loaded
-        console.log('🕉️ Shiva Netra Lite index.html loaded successfully');
-        
-        // Check if localStorage has data
+        // When page loads
         window.onload = function() {
-            setTimeout(function() {
-                const data = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
-                console.log('Current data count on load:', data.length);
-                
-                if (data.length > 0) {
-                    console.log('Data found in localStorage!');
-                }
-            }, 1000);
+            console.log("Shiva Netra Lite loaded!");
+            
+            // Fill years in dropdown (1900-2024)
+            fillYears();
+            
+            // Load existing data
+            loadData();
+            
+            // Setup form
+            setupForm();
         };
+        
+        // Fill years in dropdown
+        function fillYears() {
+            const select = document.getElementById("birthYear");
+            const currentYear = new Date().getFullYear();
+            
+            for(let year = currentYear; year >= 1900; year--) {
+                const option = document.createElement("option");
+                option.value = year;
+                option.textContent = year;
+                select.appendChild(option);
+            }
+        }
+        
+        // Setup form submission
+        function setupForm() {
+            const form = document.getElementById("myForm");
+            
+            form.onsubmit = function(e) {
+                e.preventDefault(); // Stop page reload
+                
+                // Get values
+                const name = document.getElementById("userName").value.trim();
+                const email = document.getElementById("userEmail").value.trim();
+                const birthYear = document.getElementById("birthYear").value;
+                
+                // Validate
+                if(!name || !email) {
+                    alert("Please enter name and email");
+                    return false;
+                }
+                
+                if(!email.includes("@") || !email.includes(".")) {
+                    alert("Please enter valid email");
+                    return false;
+                }
+                
+                // Create data object
+                const userData = {
+                    name: name,
+                    email: email,
+                    year: birthYear || "Not provided",
+                    time: new Date().toLocaleString(),
+                    date: new Date().toISOString().split("T")[0]
+                };
+                
+                // Save data
+                saveData(userData);
+                
+                // Show success
+                alert("✅ Thank you " + name + "!\n\nYou are now on the early access list.");
+                
+                // Reset form
+                form.reset();
+                
+                // Reload data display
+                loadData();
+                
+                return false;
+            };
+        }
+        
+        // Save data to localStorage
+        function saveData(data) {
+            // Get existing data
+            let allData = JSON.parse(localStorage.getItem("shivaData") || "[]");
+            
+            // Add new data
+            allData.push(data);
+            
+            // Save back
+            localStorage.setItem("shivaData", JSON.stringify(allData));
+            
+            console.log("Data saved:", data);
+        }
+        
+        // Load and display data
+        function loadData() {
+            const output = document.getElementById("dataOutput");
+            
+            // Get data
+            const data = JSON.parse(localStorage.getItem("shivaData") || "[]");
+            
+            if(data.length === 0) {
+                output.innerHTML = "<p>No data yet. Submit the form above.</p>";
+                return;
+            }
+            
+            // Create HTML
+            let html = "<p><strong>Total entries: " + data.length + "</strong></p>";
+            
+            data.forEach((item, index) => {
+                html += `
+                    <div class="data-item">
+                        <strong>${index + 1}. ${item.name}</strong><br>
+                        <small>Email: ${item.email}</small><br>
+                        <small>Year: ${item.year}</small><br>
+                        <small style="color:#777;">${item.time}</small>
+                    </div>
+                `;
+            });
+            
+            output.innerHTML = html;
+        }
+        
+        // Clear all data
+        function clearData() {
+            if(confirm("Are you sure you want to delete ALL data?")) {
+                localStorage.removeItem("shivaData");
+                loadData();
+                alert("All data cleared!");
+            }
+        }
+        
+        // Debug function - type this in browser console: addTestData()
+        window.addTestData = function() {
+            const testData = {
+                name: "Test User",
+                email: "test@example.com",
+                year: "1990",
+                time: new Date().toLocaleString(),
+                date: new Date().toISOString().split("T")[0]
+            };
+            
+            saveData(testData);
+            loadData();
+            alert("Test data added!");
+        };
+        
+        console.log("Script loaded successfully!");
     </script>
 </body>
-</html>
+</html>               
