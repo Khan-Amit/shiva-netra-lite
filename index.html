@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiva Netra Lite - Free Numerology Guidance</title>
+    
+    <!-- Meta Tags for SEO & Protection -->
+    <meta name="description" content="Free basic numerology guidance. Experience a glimpse of Shiva Netra's wisdom. Advanced features coming soon in Pro version.">
+    <meta name="keywords" content="numerology, spiritual guidance, free numerology, life path, destiny number">
+    <meta name="author" content="Shiva Netra">
+    <meta name="copyright" content="© 2024 Shiva Netra. Advanced algorithms protected.">
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#4C1D95">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Styles & Fonts -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="sacred-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-eye"></i>
+                    <h1>Shiva Netra <span class="lite-badge">LITE</span></h1>
+                </div>
+                <p class="tagline">Free Basic Numerology Guidance</p>
+                <p class="pro-teaser">✨ <a href="#waitlist">Advanced Pro Version Coming Soon</a></p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Experience Basic Numerology Guidance</h2>
+                <p>Get a glimpse of the wisdom that awaits in <strong>Shiva Netra Pro</strong></p>
+                <div class="cta-buttons">
+                    <button class="btn-primary" id="startReadingBtn">
+                        <i class="fas fa-calculator"></i> Start Free Reading
+                    </button>
+                    <a href="#features" class="btn-secondary">
+                        <i class="fas fa-star"></i> See Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main App -->
+    <main class="container">
+        <!-- Basic Calculator Card -->
+        <div class="card sacred-card" id="calculatorCard">
+            <div class="card-header">
+                <i class="fas fa-calculator"></i>
+                <h3>Basic Numerology Calculator</h3>
+                <span class="badge-free">FREE</span>
+            </div>
+            <div class="card-content">
+                <div class="form-group">
+                    <label for="userName"><i class="fas fa-user"></i> Your Full Name</label>
+                    <input type="text" id="userName" placeholder="Enter your full name" maxlength="50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthDate"><i class="fas fa-calendar-alt"></i> Birth Date</label>
+                    <input type="date" id="birthDate">
+                </div>
+                
+                <div class="pro-note">
+                    <i class="fas fa-lock"></i>
+                    <p><strong>Pro Feature Preview:</strong> Birth time & location analysis available in Pro version</p>
+                </div>
+                
+                <button class="btn-calculate" id="calculateBtn">
+                    <i class="fas fa-magic"></i> Calculate Basic Numbers
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Card (Initially Hidden) -->
+        <div class="card sacred-card hidden" id="resultsCard">
+            <div class="card-header">
+                <i class="fas fa-chart-pie"></i>
+                <h3>Your Basic Numerology Reading</h3>
+            </div>
+            <div class="card-content">
+                <div class="results-grid">
+                    <div class="result-box">
+                        <div class="result-label">Life Path Number</div>
+                        <div class="result-value" id="lifePathValue">-</div>
+                        <div class="result-desc" id="lifePathDesc">Basic calculation</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <div class="result-label">Destiny Number</div>
+                        <div class="result-value" id="destinyValue">-</div>
+                        <div class="result-desc" id="destinyDesc">Name-based analysis</div>
+                    </div>
+                </div>
+                
+                <div class="basic-interpretation">
+                    <h4><i class="fas fa-comment"></i> Basic Interpretation</h4>
+                    <p id="basicInterpretation">Your detailed interpretation will appear here after calculation.</p>
+                </div>
+                
+                <div class="pro-teaser-box">
+                    <div class="pro-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="pro-content">
+                        <h4>Want More Depth?</h4>
+                        <p>Get <strong>10+ additional numbers</strong>, personalized remedies, compatibility analysis, and detailed reports in Shiva Netra Pro.</p>
+                        <a href="#waitlist" class="btn-pro">Join Pro Waitlist</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Affirmation Card -->
+        <div class="card sacred-card">
+            <div class="card-header">
+                <i class="fas fa-feather-alt"></i>
+                <h3>Daily Spiritual Affirmation</h3>
+            </div>
+            <div class="card-content">
+                <div class="affirmation-box">
+                    <p id="affirmationText">"I am guided by divine wisdom in all that I do."</p>
+                </div>
+                <div class="affirmation-actions">
+                    <button class="action-btn" id="newAffirmationBtn" title="New Affirmation">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button class="action-btn" id="speakAffirmationBtn" title="Speak">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <button class="action-btn" id="copyAffirmationBtn" title="Copy">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Comparison -->
+        <section class="features" id="features">
+            <h2 class="section-title">Lite vs Pro: What's the Difference?</h2>
+            <div class="comparison-table">
+                <div class="comparison-header">
+                    <div class="feature-name">Feature</div>
+                    <div class="feature-lite">Lite (Free)</div>
+                    <div class="feature-pro">Pro (Coming Soon)</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Numbers Calculated</div>
+                    <div class="feature-lite">2 basic numbers</div>
+                    <div class="feature-pro">15+ detailed numbers</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Interpretation Depth</div>
+                    <div class="feature-lite">Basic meanings</div>
+                    <div class="feature-pro">Detailed 5-page reports</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Personal Remedies</div>
+                    <div class="feature-lite"><i class="fas fa-times"></i> Not included</div>
+                    <div class="feature-pro"><i class="fas fa-check"></i> Personalized mantras & crystals</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Compatibility Analysis</div>
+                    <div class="feature-lite">Basic percentage</div>
+                    <div class="feature-pro">Detailed relationship analysis</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Progress Tracking</div>
+                    <div class="feature-lite"><i class="fas fa-times"></i> No</div>
+                    <div class="feature-pro"><i class="fas fa-check"></i> Yes, with insights</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Data Privacy</div>
+                    <div class="feature-lite">Local storage only</div>
+                    <div class="feature-pro">Encrypted cloud storage</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-name">Support</div>
+                    <div class="feature-lite">Community help</div>
+                    <div class="feature-pro">Priority email support</div>
+                </div>
+                
+                <div class="comparison-row highlight">
+                    <div class="feature-name">Price</div>
+                    <div class="feature-lite">FREE Forever</div>
+                    <div class="feature-pro">Subscription Based</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waitlist Section -->
+        <section class="waitlist" id="waitlist">
+            <div class="waitlist-card">
+                <div class="waitlist-header">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h2>Join the Pro Waitlist</h2>
+                    <p>Be among the first to experience Shiva Netra Pro</p>
+                </div>
+                <div class="waitlist-content">
+                    <div class="benefits">
+                        <h3><i class="fas fa-gift"></i> Early Bird Benefits:</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 50% discount for first 100 users</li>
+                            <li><i class="fas fa-check-circle"></i> Early access to beta features</li>
+                            <li><i class="fas fa-check-circle"></i> Free 30-minute consultation</li>
+                            <li><i class="fas fa-check-circle"></i> Lifetime feature voting rights</li>
+                        </ul>
+                    </div>
+                    
+                    <form id="waitlistForm" class="waitlist-form">
+                        <div class="form-group">
+                            <label for="waitlistName">Your Name</label>
+                            <input type="text" id="waitlistName" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="waitlistEmail">Email Address</label>
+                            <input type="email" id="waitlistEmail" placeholder="your.email@example.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interestLevel">Interest Level</label>
+                            <select id="interestLevel" required>
+                                <option value="">Select your interest</option>
+                                <option value="very">Very Interested</option>
+                                <option value="somewhat">Somewhat Interested</option>
+                                <option value="curious">Just Curious</option>
+                            </select>
+                        </div>
+                        
+                        <div class="privacy-note">
+                            <input type="checkbox" id="privacyConsent" required>
+                            <label for="privacyConsent">I agree to receive updates about Shiva Netra Pro. Your data is protected.</label>
+                        </div>
+                        
+                        <button type="submit" class="btn-waitlist">
+                            <i class="fas fa-paper-plane"></i> Join Waitlist
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="sacred-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-eye"></i>
+                    <h3>Shiva Netra</h3>
+                    <p>Spiritual Numerology Guidance</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#features">Features</a>
+                    <a href="#waitlist">Pro Waitlist</a>
+                    <a href="#" id="aboutBtn">About</a>
+                    <a href="#" id="privacyBtn">Privacy</a>
+                </div>
+                
+                <div class="footer-legal">
+                    <h4>Legal & Protection</h4>
+                    <p>© 2024 Shiva Netra. All rights reserved.</p>
+                    <p class="legal-notice">Advanced algorithms and proprietary systems are protected intellectual property.</p>
+                    <p class="version">Lite Version: 1.0.0 | Pro Version: Coming Soon</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>This is a free basic version. Shiva Netra Pro with advanced features will be released separately.</p>
+                <p>Made with <i class="fas fa-heart"></i> for spiritual seekers worldwide.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Calculating your numbers...</p>
+    </div>
+
+    <!-- Simple Modal for Messages -->
+    <div id="simpleModal" class="simple-modal hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div id="modalMessage"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
