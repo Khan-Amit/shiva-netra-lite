@@ -3,450 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiva Netra Lite - Free Numerology Guidance</title>
+    <title>Shiva Netra Lite - AI Visual Assistant</title>
     
-    <!-- Meta Tags for SEO & Protection -->
-    <meta name="description" content="Free basic numerology guidance. Experience a glimpse of Shiva Netra's wisdom. Advanced features coming soon in Pro version.">
-    <meta name="keywords" content="numerology, spiritual guidance, free numerology, life path, destiny number, daily forecast">
-    <meta name="author" content="Shiva Netra">
-    <meta name="copyright" content="© 2024 Shiva Netra. Advanced algorithms protected.">
+    <!-- Firebase SDK (Optional - Comment out if not using) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     
-    <!-- PWA Configuration -->
-    <meta name="theme-color" content="#4C1D95">
-    <link rel="manifest" href="manifest.json">
+    <!-- Our Script -->
+    <script defer src="script.js"></script>
     
-    <!-- Styles & Fonts -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #4c51bf;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .feature h3 {
+            color: #4c51bf;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            opacity: 0.8;
+        }
+        
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .birthday-note {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="sacred-header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-eye"></i>
-                    <h1>Shiva Netra <span class="lite-badge">LITE</span></h1>
-                </div>
-                <p class="tagline">Free Numerology & Daily Guidance</p>
-                <p class="pro-teaser">✨ <a href="#waitlist">Advanced Pro Version Coming Soon</a></p>
-            </div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Shiva Netra Lite</h1>
+            <p>The Future of Personal AI Vision - Experience the world with an AI-powered visual assistant that works offline, respects your privacy, and costs nothing to run.</p>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h2>Get Daily Numerology Forecasts</h2>
-                <p>Discover your day's energy, warnings, and lucky elements</p>
-                <div class="cta-buttons">
-                    <button class="btn-primary" id="startReadingBtn">
-                        <i class="fas fa-calculator"></i> Start Free Reading
-                    </button>
-                    <a href="#dailyForecast" class="btn-secondary">
-                        <i class="fas fa-calendar-day"></i> Today's Forecast
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main App -->
-    <main class="container">
-        <!-- Daily Forecast Card -->
-        <div class="card sacred-card" id="dailyForecast">
-            <div class="card-header">
-                <i class="fas fa-calendar-check"></i>
-                <h3>Today's Cosmic Forecast</h3>
-                <span class="badge-free">DAILY</span>
-            </div>
-            <div class="card-content">
-                <div class="forecast-summary">
-                    <div class="day-rating">
-                        <div class="rating-stars" id="dayStars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="rating-text" id="dayRatingText">Excellent Day!</span>
-                    </div>
-                    
-                    <div class="forecast-details">
-                        <div class="forecast-item">
-                            <i class="fas fa-bolt"></i>
-                            <div class="forecast-info">
-                                <span class="forecast-label">Energy Level</span>
-                                <span class="forecast-value" id="energyLevel">High</span>
-                            </div>
-                        </div>
-                        
-                        <div class="forecast-item">
-                            <i class="fas fa-coins"></i>
-                            <div class="forecast-info">
-                                <span class="forecast-label">Money Luck</span>
-                                <span class="forecast-value" id="moneyLuck">Excellent</span>
-                            </div>
-                        </div>
-                        
-                        <div class="forecast-item">
-                            <i class="fas fa-heart"></i>
-                            <div class="forecast-info">
-                                <span class="forecast-label">Love Energy</span>
-                                <span class="forecast-value" id="loveEnergy">Romantic</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="forecast-warnings">
-                    <h4><i class="fas fa-exclamation-triangle"></i> Today's Warnings</h4>
-                    <ul id="warningsList">
-                        <li>Be careful of minor injuries</li>
-                        <li>Avoid lending money today</li>
-                        <li>Think before speaking in meetings</li>
-                    </ul>
-                </div>
-                
-                <div class="forecast-advice">
-                    <div class="advice-box">
-                        <i class="fas fa-plane"></i>
-                        <div>
-                            <strong>Travel:</strong> <span id="travelAdvice">Good for short trips</span>
-                        </div>
-                    </div>
-                    <div class="advice-box">
-                        <i class="fas fa-users"></i>
-                        <div>
-                            <strong>Social:</strong> <span id="socialAdvice">Meet new people cautiously</span>
-                        </div>
-                    </div>
-                    <div class="advice-box">
-                        <i class="fas fa-cloud-sun"></i>
-                        <div>
-                            <strong>Weather Vibe:</strong> <span id="weatherVibe">Partly cloudy emotions</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="lucky-section">
-                    <h4><i class="fas fa-clover"></i> Lucky Elements</h4>
-                    <div class="lucky-items">
-                        <span class="lucky-tag"><i class="fas fa-gem"></i> Color: <span id="luckyColor">Blue</span></span>
-                        <span class="lucky-tag"><i class="fas fa-clock"></i> Time: <span id="luckyTime">2-4 PM</span></span>
-                        <span class="lucky-tag"><i class="fas fa-utensils"></i> Food: <span id="luckyFood">Spicy</span></span>
-                        <span class="lucky-tag"><i class="fas fa-music"></i> Direction: <span id="luckyDirection">East</span></span>
-                    </div>
-                </div>
-                
-                <button class="btn-refresh-forecast" id="refreshForecastBtn">
-                    <i class="fas fa-sync-alt"></i> Refresh Today's Forecast
-                </button>
-                
-                <div class="forecast-note">
-                    <i class="fas fa-info-circle"></i>
-                    <p>Forecast updates daily at midnight. Refresh for instant new insights!</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Basic Calculator Card -->
-        <div class="card sacred-card" id="calculatorCard">
-            <div class="card-header">
-                <i class="fas fa-calculator"></i>
-                <h3>Basic Numerology Calculator</h3>
-                <span class="badge-free">FREE</span>
-            </div>
-            <div class="card-content">
+        
+        <!-- Early Access Form -->
+        <div class="card">
+            <h2 class="section-title">Get Early Access</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #4a5568;">Join the exclusive early access list for Shiva Netra Lite. Be among the first to experience personal AI vision.</p>
+            
+            <form id="earlyAccessForm">
                 <div class="form-group">
-                    <label for="userName"><i class="fas fa-user"></i> Your Full Name</label>
-                    <input type="text" id="userName" placeholder="Enter your full name" maxlength="50">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
                 </div>
                 
                 <div class="form-group">
-                    <label for="birthDate"><i class="fas fa-calendar-alt"></i> Birth Date</label>
-                    <div class="date-selector">
-                        <div class="date-dropdowns">
-                            <select id="birthDay" class="date-dropdown">
-                                <option value="">Day</option>
-                                <!-- Days 1-31 filled by JavaScript -->
-                            </select>
-                            <select id="birthMonth" class="date-dropdown">
-                                <option value="">Month</option>
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                            <select id="birthYear" class="date-dropdown">
-                                <option value="">Year</option>
-                                <!-- Years 1900-2024 filled by JavaScript -->
-                            </select>
-                        </div>
-                        <div class="quick-year-buttons">
-                            <button type="button" class="year-btn" data-decade="1990">90s</button>
-                            <button type="button" class="year-btn" data-decade="1980">80s</button>
-                            <button type="button" class="year-btn" data-decade="1970">70s</button>
-                            <button type="button" class="year-btn" data-decade="2000">00s</button>
-                        </div>
-                    </div>
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
                 </div>
                 
-                <div class="pro-note">
-                    <i class="fas fa-lock"></i>
-                    <p><strong>Pro Feature Preview:</strong> Birth time & location analysis available in Pro version</p>
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (123) 456-7890">
                 </div>
                 
-                <button class="btn-calculate" id="calculateBtn">
-                    <i class="fas fa-magic"></i> Calculate Basic Numbers
-                </button>
-            </div>
-        </div>
-
-        <!-- Results Card (Initially Hidden) -->
-        <div class="card sacred-card hidden" id="resultsCard">
-            <div class="card-header">
-                <i class="fas fa-chart-pie"></i>
-                <h3>Your Basic Numerology Reading</h3>
-            </div>
-            <div class="card-content">
-                <div class="results-grid">
-                    <div class="result-box">
-                        <div class="result-label">Life Path Number</div>
-                        <div class="result-value" id="lifePathValue">-</div>
-                        <div class="result-desc" id="lifePathDesc">Your life's journey</div>
-                    </div>
-                    
-                    <div class="result-box">
-                        <div class="result-label">Destiny Number</div>
-                        <div class="result-value" id="destinyValue">-</div>
-                        <div class="result-desc" id="destinyDesc">Your soul's purpose</div>
-                    </div>
+                <!-- SIMPLIFIED BIRTHDAY - DROPDOWN ONLY -->
+                <div class="form-group">
+                    <label for="birthYear">Birth Year (Optional)</label>
+                    <select id="birthYear" name="birthYear">
+                        <option value="">Select your birth year</option>
+                        <option value="2005">2005</option>
+                        <option value="2004">2004</option>
+                        <option value="2003">2003</option>
+                        <option value="2002">2002</option>
+                        <option value="2001">2001</option>
+                        <option value="2000">2000</option>
+                        <option value="1999">1999</option>
+                        <option value="1998">1998</option>
+                        <option value="1997">1997</option>
+                        <option value="1996">1996</option>
+                        <option value="1995">1995</option>
+                        <option value="1994">1994</option>
+                        <option value="1993">1993</option>
+                        <option value="1992">1992</option>
+                        <option value="1991">1991</option>
+                        <option value="1990">1990</option>
+                        <option value="1989">1989</option>
+                        <option value="1988">1988</option>
+                        <option value="1987">1987</option>
+                        <option value="1986">1986</option>
+                        <option value="1985">1985</option>
+                    </select>
+                    <div class="birthday-note">We only ask for year for demographic analysis</div>
                 </div>
                 
-                <div class="basic-interpretation">
-                    <h4><i class="fas fa-comment"></i> Basic Interpretation</h4>
-                    <p id="basicInterpretation">Your detailed interpretation will appear here after calculation.</p>
+                <div class="form-group">
+                    <label for="interest">Primary Interest (Optional)</label>
+                    <select id="interest" name="interest">
+                        <option value="general">General Use</option>
+                        <option value="accessibility">Accessibility Support</option>
+                        <option value="productivity">Productivity Enhancement</option>
+                        <option value="education">Educational Purposes</option>
+                        <option value="research">Research & Development</option>
+                        <option value="other">Other</option>
+                    </select>
                 </div>
                 
-                <div class="pro-teaser-box">
-                    <div class="pro-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <div class="pro-content">
-                        <h4>Want More Depth?</h4>
-                        <p>Get <strong>10+ additional numbers</strong>, personalized remedies, compatibility analysis, and detailed reports in Shiva Netra Pro.</p>
-                        <a href="#waitlist" class="btn-pro">Join Pro Waitlist</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Daily Affirmation Card -->
-        <div class="card sacred-card">
-            <div class="card-header">
-                <i class="fas fa-feather-alt"></i>
-                <h3>Daily Spiritual Affirmation</h3>
-            </div>
-            <div class="card-content">
-                <div class="affirmation-box">
-                    <p id="affirmationText">"I am guided by divine wisdom in all that I do."</p>
-                </div>
-                <div class="affirmation-actions">
-                    <button class="action-btn" id="newAffirmationBtn" title="New Affirmation">
-                        <i class="fas fa-redo"></i>
-                    </button>
-                    <button class="action-btn" id="speakAffirmationBtn" title="Speak">
-                        <i class="fas fa-volume-up"></i>
-                    </button>
-                    <button class="action-btn" id="copyAffirmationBtn" title="Copy">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Features Comparison -->
-        <section class="features" id="features">
-            <h2 class="section-title">Lite vs Pro: What's the Difference?</h2>
-            <div class="comparison-table">
-                <div class="comparison-header">
-                    <div class="feature-name">Feature</div>
-                    <div class="feature-lite">Lite (Free)</div>
-                    <div class="feature-pro">Pro (Coming Soon)</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Daily Forecasts</div>
-                    <div class="feature-lite">Basic daily insights</div>
-                    <div class="feature-pro">Personalized hour-by-hour</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Numbers Calculated</div>
-                    <div class="feature-lite">2 basic numbers</div>
-                    <div class="feature-pro">15+ detailed numbers</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Interpretation Depth</div>
-                    <div class="feature-lite">Basic meanings</div>
-                    <div class="feature-pro">Detailed 5-page reports</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Personal Remedies</div>
-                    <div class="feature-lite"><i class="fas fa-times"></i> Not included</div>
-                    <div class="feature-pro"><i class="fas fa-check"></i> Personalized mantras & crystals</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Compatibility Analysis</div>
-                    <div class="feature-lite">Basic percentage</div>
-                    <div class="feature-pro">Detailed relationship analysis</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Progress Tracking</div>
-                    <div class="feature-lite"><i class="fas fa-times"></i> No</div>
-                    <div class="feature-pro"><i class="fas fa-check"></i> Yes, with insights</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Warnings & Alerts</div>
-                    <div class="feature-lite">General daily warnings</div>
-                    <div class="feature-pro">Personalized danger alerts</div>
-                </div>
-                
-                <div class="comparison-row highlight">
-                    <div class="feature-name">Price</div>
-                    <div class="feature-lite">FREE Forever</div>
-                    <div class="feature-pro">Subscription Based</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Waitlist Section -->
-        <section class="waitlist" id="waitlist">
-            <div class="waitlist-card">
-                <div class="waitlist-header">
-                    <i class="fas fa-envelope-open-text"></i>
-                    <h2>Join the Pro Waitlist</h2>
-                    <p>Be among the first to experience Shiva Netra Pro</p>
-                </div>
-                <div class="waitlist-content">
-                    <div class="benefits">
-                        <h3><i class="fas fa-gift"></i> Early Bird Benefits:</h3>
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> 50% discount for first 100 users</li>
-                            <li><i class="fas fa-check-circle"></i> Early access to beta features</li>
-                            <li><i class="fas fa-check-circle"></i> Free 30-minute consultation</li>
-                            <li><i class="fas fa-check-circle"></i> Lifetime feature voting rights</li>
-                        </ul>
-                    </div>
-                    
-                    <form id="waitlistForm" class="waitlist-form">
-                        <div class="form-group">
-                            <label for="waitlistName">Your Name</label>
-                            <input type="text" id="waitlistName" placeholder="Enter your name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="waitlistEmail">Email Address</label>
-                            <input type="email" id="waitlistEmail" placeholder="your.email@example.com" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="interestLevel">Interest Level</label>
-                            <select id="interestLevel" required>
-                                <option value="">Select your interest</option>
-                                <option value="very">Very Interested</option>
-                                <option value="somewhat">Somewhat Interested</option>
-                                <option value="curious">Just Curious</option>
-                            </select>
-                        </div>
-                        
-                        <div class="privacy-note">
-                            <input type="checkbox" id="privacyConsent" required>
-                            <label for="privacyConsent">I agree to receive updates about Shiva Netra Pro. Your data is protected.</label>
-                        </div>
-                        
-                        <button type="submit" class="btn-waitlist">
-                            <i class="fas fa-paper-plane"></i> Join Waitlist
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="sacred-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-eye"></i>
-                    <h3>Shiva Netra</h3>
-                    <p>Spiritual Numerology Guidance</p>
-                </div>
-                
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <a href="#dailyForecast">Today's Forecast</a>
-                    <a href="#calculatorCard">Calculator</a>
-                    <a href="#waitlist">Pro Waitlist</a>
-                    <a href="#" id="aboutBtn">About</a>
-                </div>
-                
-                <div class="footer-legal">
-                    <h4>Legal & Protection</h4>
-                    <p>© 2024 Shiva Netra. All rights reserved.</p>
-                    <p class="legal-notice">Advanced algorithms and proprietary systems are protected intellectual property.</p>
-                    <p class="version">Lite Version: 1.1.0 | Pro Version: Coming Soon</p>
-                </div>
+                <button type="submit">Get Early Access</button>
+            </form>
+            
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message">
+                <h3>🎉 Thank You!</h3>
+                <p>You have been successfully added to the Shiva Netra Lite early access list.</p>
+                <p>We will contact you soon with updates.</p>
             </div>
             
-            <div class="copyright">
-                <p>This is a free basic version. Shiva Netra Pro with advanced features will be released separately.</p>
-                <p>Made with <i class="fas fa-heart"></i> for spiritual seekers worldwide.</p>
+            <!-- Welcome Back Message -->
+            <div id="welcomeMessage" class="success-message" style="background: #3b82f6; display: none;">
+                <h3>👋 Welcome Back!</h3>
+                <p>We found your previous submission. Thank you for your interest!</p>
             </div>
         </div>
-    </footer>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
-
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="spinner"></div>
-        <p>Calculating your numbers...</p>
-    </div>
-
-    <!-- Simple Modal for Messages -->
-    <div id="simpleModal" class="simple-modal hidden">
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <div id="modalMessage"></div>
+        
+        <!-- Features -->
+        <div class="card">
+            <h2 class="section-title">Why Shiva Netra Lite?</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Privacy First</h3>
+                    <p>All processing happens on-device. No data sent to cloud, ever.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h3>No Cloud Costs</h3>
+                    <p>Zero ongoing costs. Runs entirely on your device.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Real-time processing with minimal latency.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Works Offline</h3>
+                    <p>Full functionality without internet connection.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Shiva Netra Lite &copy; 2024 | AI-Powered Visual Assistant</p>
+            <p style="margin-top: 10px; font-size: 14px;">Contact: khan.amit@example.com</p>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="script.js"></script>
+    
+    <!-- Simple Loader (hidden by default) -->
+    <div id="loader" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.95);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        flex-direction: column;
+    ">
+        <div style="
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        "></div>
+        <p style="margin-top: 20px; color: #333; font-size: 16px;">Processing...</p>
+    </div>
 </body>
 </html>
