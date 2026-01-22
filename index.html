@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shiva Netra Lite - AI Visual Assistant</title>
     
-    <!-- Firebase SDK (Optional - Comment out if not using) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
     <!-- Our Script -->
     <script defer src="script.js"></script>
     
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+    
     <style>
+        /* Additional inline styles */
         * {
             margin: 0;
             padding: 0;
@@ -151,6 +151,24 @@
             animation: fadeIn 0.5s;
         }
         
+        .data-display {
+            display: none;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .submission-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -176,6 +194,34 @@
             color: #718096;
             margin-top: 5px;
             font-style: italic;
+        }
+        
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -208,32 +254,12 @@
                     <input type="tel" id="phone" name="phone" placeholder="+1 (123) 456-7890">
                 </div>
                 
-                <!-- SIMPLIFIED BIRTHDAY - DROPDOWN ONLY -->
+                <!-- DYNAMIC BIRTH YEAR -->
                 <div class="form-group">
                     <label for="birthYear">Birth Year (Optional)</label>
                     <select id="birthYear" name="birthYear">
                         <option value="">Select your birth year</option>
-                        <option value="2005">2005</option>
-                        <option value="2004">2004</option>
-                        <option value="2003">2003</option>
-                        <option value="2002">2002</option>
-                        <option value="2001">2001</option>
-                        <option value="2000">2000</option>
-                        <option value="1999">1999</option>
-                        <option value="1998">1998</option>
-                        <option value="1997">1997</option>
-                        <option value="1996">1996</option>
-                        <option value="1995">1995</option>
-                        <option value="1994">1994</option>
-                        <option value="1993">1993</option>
-                        <option value="1992">1992</option>
-                        <option value="1991">1991</option>
-                        <option value="1990">1990</option>
-                        <option value="1989">1989</option>
-                        <option value="1988">1988</option>
-                        <option value="1987">1987</option>
-                        <option value="1986">1986</option>
-                        <option value="1985">1985</option>
+                        <!-- Years will be added by JavaScript -->
                     </select>
                     <div class="birthday-note">We only ask for year for demographic analysis</div>
                 </div>
@@ -260,10 +286,15 @@
                 <p>We will contact you soon with updates.</p>
             </div>
             
-            <!-- Welcome Back Message -->
-            <div id="welcomeMessage" class="success-message" style="background: #3b82f6; display: none;">
-                <h3>👋 Welcome Back!</h3>
-                <p>We found your previous submission. Thank you for your interest!</p>
+            <!-- Data Display -->
+            <div id="dataDisplay" class="data-display">
+                <h3>📊 Recent Submissions</h3>
+                <div id="submissionsList">
+                    <!-- Data will appear here -->
+                </div>
+                <button onclick="clearData()" style="background:#ef4444; margin-top:15px; padding:10px 20px; font-size:14px;">
+                    Clear All Data
+                </button>
             </div>
         </div>
         
@@ -301,29 +332,15 @@
         </div>
     </div>
     
-    <!-- Simple Loader (hidden by default) -->
-    <div id="loader" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255,255,255,0.95);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        flex-direction: column;
-    ">
-        <div style="
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        "></div>
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
         <p style="margin-top: 20px; color: #333; font-size: 16px;">Processing...</p>
     </div>
+    
+    <script>
+        // Quick test to see if script is loaded
+        console.log('🕉️ Shiva Netra Lite index.html loaded');
+    </script>
 </body>
 </html>
