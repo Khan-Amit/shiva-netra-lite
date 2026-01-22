@@ -1,5 +1,5 @@
 // ==========================================
-// SHIVA NETRA LITE - FULL DATE COLLECTION
+// SHIVA NETRA LITE - COMPLETE SCRIPT
 // ==========================================
 
 console.log('🕉️ Shiva Netra Lite - Loading...');
@@ -14,32 +14,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Main initialization
 function initializeApp() {
-    console.log('🔄 Initializing...');
+    console.log('🔄 Initializing application...');
     
-    // 1. Populate ALL date dropdowns
+    // 1. Populate date dropdowns
     populateDateDropdowns();
     
-    // 2. Setup form
+    // 2. Setup form submission
     setupForm();
     
-    // 3. Load existing data
-    loadData();
+    // 3. Check for existing user
+    checkExistingUser();
     
-    console.log('✅ App initialized!');
+    // 4. Load and display data
+    loadAndDisplayData();
+    
+    // 5. Setup debug tools
+    setupDebugTools();
+    
+    console.log('✅ Application initialized successfully!');
 }
 
 // ==========================================
-// DATE DROPDOWNS - DAY, MONTH, YEAR
+// DATE DROPDOWNS
 // ==========================================
 
 function populateDateDropdowns() {
-    console.log('📅 Setting up date dropdowns...');
+    console.log('📅 Populating date dropdowns...');
     
     // Get current date
     const now = new Date();
     const currentYear = now.getFullYear();
     
-    // 1. Populate DAYS (1-31)
+    // 1. Days (1-31)
     const daySelect = document.getElementById('birthDay');
     if (daySelect) {
         daySelect.innerHTML = '<option value="">Day</option>';
@@ -52,7 +58,7 @@ function populateDateDropdowns() {
         console.log('✅ Days populated: 1-31');
     }
     
-    // 2. Populate MONTHS (1-12)
+    // 2. Months (January-December)
     const monthSelect = document.getElementById('birthMonth');
     if (monthSelect) {
         const months = [
@@ -70,7 +76,7 @@ function populateDateDropdowns() {
         console.log('✅ Months populated');
     }
     
-    // 3. Populate YEARS (1900-current)
+    // 3. Years (1900-current)
     const yearSelect = document.getElementById('birthYear');
     if (yearSelect) {
         yearSelect.innerHTML = '<option value="">Year</option>';
@@ -85,7 +91,7 @@ function populateDateDropdowns() {
 }
 
 // ==========================================
-// FORM HANDLING WITH FULL DATE
+// FORM HANDLING
 // ==========================================
 
 function setupForm() {
@@ -99,41 +105,42 @@ function setupForm() {
         event.preventDefault();
         console.log('📝 Form submitted!');
         
-        // Get ALL form values
+        // Get form values
         const formData = {
             // Basic info
             name: document.getElementById('name').value.trim(),
             email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone')?.value.trim() || '',
-            interest: document.getElementById('interest')?.value || 'general',
+            phone: document.getElementById('phone').value.trim() || '',
+            interest: document.getElementById('interest').value || 'general',
             
-            // FULL DATE (day, month, year)
-            birthDay: document.getElementById('birthDay')?.value || '',
-            birthMonth: document.getElementById('birthMonth')?.value || '',
-            birthYear: document.getElementById('birthYear')?.value || '',
+            // Date components
+            birthDay: document.getElementById('birthDay').value,
+            birthMonth: document.getElementById('birthMonth').value,
+            birthYear: document.getElementById('birthYear').value,
             
             // Timestamps
             timestamp: new Date().toLocaleString(),
-            isoDate: new Date().toISOString(),
+            submittedAt: new Date().toISOString(),
             id: Date.now()
         };
         
-        console.log('Form data collected:', formData);
+        console.log('Form data:', formData);
         
-        // Validate
+        // Validate form
         if (!validateForm(formData)) {
             return;
         }
         
-        // Format full date string
-        const fullDate = formatFullDate(formData.birthDay, formData.birthMonth, formData.birthYear);
-        formData.fullDate = fullDate;
+        // Format full date
+        formData.fullDate = formatFullDate(formData.birthDay, formData.birthMonth, formData.birthYear);
+        formData.displayDate = formatDateForDisplay(formData.birthDay, formData.birthMonth, formData.birthYear);
         
         // Show loading
-        showLoading(true);
+        showLoading(true, 'Saving your information...');
         
-        // Save data
+        // Process after delay
         setTimeout(function() {
+            // Save data
             saveUserData(formData);
             
             // Hide form, show success
@@ -141,36 +148,32 @@ function setupForm() {
             document.getElementById('successMessage').style.display = 'block';
             document.getElementById('dataDisplay').style.display = 'block';
             
-            // Load and display data
-            loadData();
+            // Update data display
+            loadAndDisplayData();
             
             // Hide loading
             showLoading(false);
             
-            console.log('✅ Form processed!');
+            // Scroll to data
+            document.getElementById('dataDisplay').scrollIntoView({ behavior: 'smooth' });
             
-        }, 1000);
+            console.log('✅ Form processed successfully!');
+            
+        }, 1500);
     });
 }
 
-// Format date as YYYY-MM-DD
+// ==========================================
+// DATE FORMATTING
+// ==========================================
+
 function formatFullDate(day, month, year) {
-    if (!day || !month || !year) {
-        return 'Date not complete';
-    }
-    
-    // Ensure 2-digit format
-    const formattedDay = day.padStart(2, '0');
-    const formattedMonth = month.padStart(2, '0');
-    
-    return `${year}-${formattedMonth}-${formattedDay}`;
+    if (!day || !month || !year) return '';
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
 
-// Format date for display (e.g., "January 15, 1990")
 function formatDateForDisplay(day, month, year) {
-    if (!day || !month || !year) {
-        return 'Date not provided';
-    }
+    if (!day || !month || !year) return 'Date not provided';
     
     const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -197,33 +200,33 @@ function validateForm(data) {
         return false;
     }
     
-    // Basic email validation
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
         alert('Please enter a valid email address (format: name@domain.com)');
         return false;
     }
     
-    // Check if date is partially filled (optional but validate if partially filled)
+    // Check date validation if partially filled
     const hasSomeDate = data.birthDay || data.birthMonth || data.birthYear;
     const hasAllDate = data.birthDay && data.birthMonth && data.birthYear;
     
     if (hasSomeDate && !hasAllDate) {
-        if (confirm('You provided only part of your birth date. Continue without complete date?')) {
-            return true;
-        } else {
+        if (!confirm('You provided only part of your birth date. Continue without complete date?')) {
             return false;
         }
     }
     
-    // Validate date if complete
+    // Validate full date if provided
     if (hasAllDate) {
         const day = parseInt(data.birthDay);
         const month = parseInt(data.birthMonth);
         const year = parseInt(data.birthYear);
         
-        // Check valid date
+        // Create date object
         const date = new Date(year, month - 1, day);
+        
+        // Check if date is valid
         if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
             alert('Please enter a valid date (e.g., February has 28/29 days)');
             return false;
@@ -235,101 +238,108 @@ function validateForm(data) {
             alert('Birth date cannot be in the future');
             return false;
         }
-        
-        // Check reasonable age (not older than 150 years)
-        const age = today.getFullYear() - year;
-        if (age > 150) {
-            alert('Please enter a realistic birth year');
-            return false;
-        }
     }
     
     return true;
 }
 
 // ==========================================
-// DATA STORAGE & DISPLAY
+// DATA STORAGE
 // ==========================================
 
-// Save data
 function saveUserData(data) {
     try {
-        // Get existing submissions
-        let submissions = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
+        // Get existing data
+        let allData = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
         
-        // Add new submission
-        submissions.unshift(data);
+        // Add new data at the beginning
+        allData.unshift(data);
         
-        // Keep only last 50
-        if (submissions.length > 50) {
-            submissions = submissions.slice(0, 50);
+        // Keep only last 50 entries
+        if (allData.length > 50) {
+            allData = allData.slice(0, 50);
         }
         
-        // Save back
-        localStorage.setItem('shivaNetraSubmissions', JSON.stringify(submissions));
+        // Save back to localStorage
+        localStorage.setItem('shivaNetraSubmissions', JSON.stringify(allData));
         
-        // Also save last submission
-        localStorage.setItem('shivaNetraLastSubmission', JSON.stringify(data));
+        // Save user info separately
         localStorage.setItem('shivaNetraUserEmail', data.email);
         localStorage.setItem('shivaNetraUserName', data.name);
+        localStorage.setItem('shivaNetraLastSubmission', JSON.stringify(data));
         
-        console.log('✅ Data saved. Total:', submissions.length);
+        console.log('✅ Data saved. Total entries:', allData.length);
         return true;
         
     } catch (error) {
-        console.error('❌ Save error:', error);
-        alert('Error saving data. Please try again.');
+        console.error('❌ Error saving data:', error);
+        alert('Error saving your data. Please try again.');
         return false;
     }
 }
 
-// Load and display data
-function loadData() {
+// ==========================================
+// DATA DISPLAY
+// ==========================================
+
+function loadAndDisplayData() {
     const submissionsList = document.getElementById('submissionsList');
-    if (!submissionsList) return;
+    const dataCount = document.getElementById('dataCount');
+    const dataDisplay = document.getElementById('dataDisplay');
+    
+    if (!submissionsList || !dataCount) return;
     
     try {
         // Get data
-        const submissions = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
+        const data = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
         
-        if (submissions.length === 0) {
-            submissionsList.innerHTML = '<p style="color:#666;text-align:center;">No submissions yet. Be the first!</p>';
+        // Update count
+        dataCount.textContent = `${data.length} submission${data.length !== 1 ? 's' : ''}`;
+        
+        if (data.length === 0) {
+            submissionsList.innerHTML = `
+                <div style="text-align: center; padding: 30px; color: #666;">
+                    <p style="font-size: 16px;">📭 No submissions yet</p>
+                    <p style="font-size: 14px; margin-top: 10px;">Be the first to join the early access list!</p>
+                </div>
+            `;
+            dataDisplay.style.display = 'none';
             return;
         }
         
-        // Create HTML
-        let html = '<div style="max-height:400px;overflow-y:auto;">';
+        // Show data display
+        dataDisplay.style.display = 'block';
         
-        submissions.forEach((sub, index) => {
-            // Format date for display
-            const displayDate = formatDateForDisplay(sub.birthDay, sub.birthMonth, sub.birthYear);
+        // Build HTML
+        let html = '<div style="max-height: 400px; overflow-y: auto; padding-right: 10px;">';
+        
+        data.forEach((item, index) => {
+            const displayDate = item.displayDate || formatDateForDisplay(item.birthDay, item.birthMonth, item.birthYear);
             
             html += `
-                <div style="
-                    border: 1px solid #e2e8f0;
-                    border-radius: 8px;
-                    padding: 15px;
-                    margin-bottom: 10px;
-                    background: white;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                ">
-                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div class="submission-item">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <div>
-                            <strong style="color:#4c51bf;font-size:16px;">${sub.name}</strong>
-                            <div style="color:#718096;font-size:14px;">${sub.email}</div>
+                            <h4 style="margin: 0 0 5px 0; color: #4c51bf;">${item.name}</h4>
+                            <p style="margin: 0; color: #718096; font-size: 14px;">${item.email}</p>
                         </div>
-                        <span style="color:#a0aec0;font-size:12px;">#${index + 1}</span>
+                        <span style="background: #e2e8f0; color: #4a5568; padding: 3px 8px; border-radius: 12px; font-size: 12px;">
+                            #${index + 1}
+                        </span>
                     </div>
                     
-                    <div style="margin-top:10px;font-size:14px;">
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                            <span><strong>📅 Date:</strong> ${displayDate}</span>
-                            <span><strong>📞 Phone:</strong> ${sub.phone || 'Not provided'}</span>
-                            <span><strong>🎯 Interest:</strong> ${sub.interest}</span>
-                        </div>
-                        <div style="color:#cbd5e0;font-size:12px;margin-top:5px;">
-                            Submitted: ${sub.timestamp}
-                        </div>
+                    <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; font-size: 14px;">
+                        <span style="color: #4a5568;">
+                            <strong>📅:</strong> ${displayDate}
+                        </span>
+                        ${item.phone ? `<span style="color: #4a5568;"><strong>📞:</strong> ${item.phone}</span>` : ''}
+                        <span style="color: #4a5568;">
+                            <strong>🎯:</strong> ${item.interest}
+                        </span>
+                    </div>
+                    
+                    <div style="margin-top: 8px; color: #a0aec0; font-size: 12px;">
+                        Submitted: ${item.timestamp}
                     </div>
                 </div>
             `;
@@ -337,26 +347,32 @@ function loadData() {
         
         html += '</div>';
         
-        // Add summary
-        html += `
-            <div style="
-                background: #f7fafc;
-                padding: 10px;
-                border-radius: 6px;
-                margin-top: 15px;
-                text-align: center;
-                border: 1px dashed #cbd5e0;
-            ">
-                <strong>Total Submissions:</strong> ${submissions.length}
-            </div>
-        `;
-        
         submissionsList.innerHTML = html;
-        console.log(`✅ Displayed ${submissions.length} submissions`);
+        
+        console.log(`✅ Displayed ${data.length} submissions`);
         
     } catch (error) {
-        console.error('❌ Display error:', error);
-        submissionsList.innerHTML = '<p style="color:#e53e3e;">Error loading data</p>';
+        console.error('❌ Error displaying data:', error);
+        submissionsList.innerHTML = `
+            <div style="color: #e53e3e; text-align: center; padding: 20px;">
+                Error loading data. Please refresh the page.
+            </div>
+        `;
+    }
+}
+
+// ==========================================
+// USER MANAGEMENT
+// ==========================================
+
+function checkExistingUser() {
+    const savedEmail = localStorage.getItem('shivaNetraUserEmail');
+    if (savedEmail) {
+        console.log('Welcome back:', savedEmail);
+        const welcomeMsg = document.getElementById('welcomeMessage');
+        if (welcomeMsg) {
+            welcomeMsg.style.display = 'block';
+        }
     }
 }
 
@@ -364,23 +380,24 @@ function loadData() {
 // UI HELPERS
 // ==========================================
 
-// Show/hide loader
-function showLoading(show) {
+function showLoading(show, message = 'Processing...') {
     const loader = document.getElementById('loader');
     if (loader) {
         loader.style.display = show ? 'flex' : 'none';
+        const text = loader.querySelector('.loader-text');
+        if (text) text.textContent = message;
     }
 }
 
 // Clear all data
 function clearAllData() {
-    if (confirm('Are you sure? This will delete ALL saved data!')) {
+    if (confirm('⚠️ Are you sure you want to delete ALL data? This cannot be undone!')) {
         localStorage.removeItem('shivaNetraSubmissions');
-        localStorage.removeItem('shivaNetraLastSubmission');
         localStorage.removeItem('shivaNetraUserEmail');
         localStorage.removeItem('shivaNetraUserName');
+        localStorage.removeItem('shivaNetraLastSubmission');
         
-        alert('All data cleared!');
+        alert('✅ All data cleared successfully!');
         location.reload();
     }
 }
@@ -392,44 +409,51 @@ window.clearAllData = clearAllData;
 // DEBUG TOOLS
 // ==========================================
 
-// Add debug functions to console
-window.debugShiva = {
-    // View all data
-    viewData: function() {
-        const data = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
-        console.log('📊 All submissions:', data);
-        console.log('Total:', data.length);
-        return data;
-    },
-    
-    // Add test entry
-    addTest: function() {
-        const testData = {
-            name: 'Test User',
-            email: 'test@example.com',
-            phone: '+1234567890',
-            birthDay: '15',
-            birthMonth: '01',
-            birthYear: '1990',
-            interest: 'general',
-            timestamp: new Date().toLocaleString(),
-            id: Date.now()
-        };
+function setupDebugTools() {
+    window.debugShiva = {
+        // View all data
+        viewData: function() {
+            const data = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
+            console.log('📊 All data:', data);
+            console.log('Total:', data.length);
+            return data;
+        },
         
-        saveUserData(testData);
-        loadData();
-        alert('✅ Test data added!');
-    },
-    
-    // Check storage
-    storage: function() {
-        const keys = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            keys.push(localStorage.key(i));
+        // Add test data
+        addTest: function() {
+            const testData = {
+                name: 'Test User',
+                email: 'test@example.com',
+                phone: '+1234567890',
+                birthDay: '15',
+                birthMonth: '01',
+                birthYear: '1990',
+                interest: 'general',
+                timestamp: new Date().toLocaleString(),
+                id: Date.now()
+            };
+            
+            saveUserData(testData);
+            loadAndDisplayData();
+            alert('✅ Test data added!');
+        },
+        
+        // Check storage
+        checkStorage: function() {
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                keys.push(localStorage.key(i));
+            }
+            console.log('🗃️ LocalStorage keys:', keys);
+            return keys;
         }
-        console.log('🗃️ LocalStorage keys:', keys);
-        return keys;
-    }
-};
+    };
+    
+    console.log('🔧 Debug tools available. Use: debugShiva.viewData()');
+}
 
-console.log('✨ Shiva Netra Lite ready! Use debugShiva.viewData() to check data.');
+// ==========================================
+// INITIALIZATION COMPLETE
+// ==========================================
+
+console.log('✨ Shiva Netra Lite ready!');
