@@ -1,150 +1,158 @@
-// Shiva Netra Lite - ULTRA SIMPLE WORKING VERSION
-console.log('🚀 Shiva Netra - Loading...');
+// Shiva Netra Lite - Simple Working Version
+console.log('Shiva Netra Lite loaded!');
 
 // When page loads
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ Page loaded');
+window.onload = function() {
+    console.log('Page loaded successfully');
     
-    // Show alert with current data count
-    const data = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
-    console.log('Current data count:', data.length);
+    // Fill birth years (1900-current year)
+    fillBirthYears();
     
-    // Populate birth years
-    const birthYearSelect = document.getElementById('birthYear');
-    if (birthYearSelect) {
-        const currentYear = new Date().getFullYear();
-        for (let year = currentYear; year >= 1900; year--) {
-            const option = document.createElement('option');
-            option.value = year;
-            option.textContent = year;
-            birthYearSelect.appendChild(option);
-        }
-    }
+    // Setup form
+    setupForm();
     
-    // Handle form submission
-    const form = document.getElementById('earlyAccessForm');
-    if (form) {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Get form data
-            const formData = {
-                name: document.getElementById('name').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                phone: document.getElementById('phone')?.value.trim() || '',
-                birthYear: document.getElementById('birthYear')?.value || '',
-                interest: document.getElementById('interest')?.value || 'general',
-                timestamp: new Date().toLocaleString(),
-                id: Date.now()
-            };
-            
-            console.log('Submitting:', formData);
-            
-            // Validate
-            if (!formData.name || !formData.email) {
-                alert('Please enter name and email');
-                return;
-            }
-            
-            if (!formData.email.includes('@')) {
-                alert('Please enter valid email');
-                return;
-            }
-            
-            // Save to LocalStorage
-            saveData(formData);
-            
-            // Show success
-            alert('✅ Thank you ' + formData.name + '! You are on the early access list.');
-            
-            // Reset form
-            form.reset();
-            
-            // Show data on page
-            displayData();
-        });
-    }
-    
-    // Display existing data
-    displayData();
-});
+    // Show existing data
+    showData();
+};
 
-// Save data
-function saveData(data) {
-    let allData = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
-    allData.unshift(data); // Add to beginning
+// Fill birth year dropdown
+function fillBirthYears() {
+    const select = document.getElementById('birthYear');
+    if (!select) return;
     
-    // Keep only last 50
-    if (allData.length > 50) {
-        allData = allData.slice(0, 50);
+    const currentYear = new Date().getFullYear();
+    const startYear = 1900;
+    
+    // Clear existing options (keep first one)
+    while (select.options.length > 1) {
+        select.remove(1);
     }
     
-    localStorage.setItem('shivaNetraSubmissions', JSON.stringify(allData));
-    console.log('Data saved. Total:', allData.length);
+    // Add years
+    for (let year = currentYear; year >= startYear; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        select.appendChild(option);
+    }
+    
+    console.log('Birth years filled:', currentYear - startYear + 1, 'years');
 }
 
-// Display data ON PAGE
-function displayData() {
-    const data = JSON.parse(localStorage.getItem('shivaNetraSubmissions') || '[]');
-    
-    // Create or find display area
-    let displayArea = document.getElementById('dataDisplayArea');
-    
-    if (!displayArea) {
-        displayArea = document.createElement('div');
-        displayArea.id = 'dataDisplayArea';
-        displayArea.style.cssText = `
-            background: white;
-            padding: 20px;
-            margin-top: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        `;
-        
-        // Add to page (after form or at bottom)
-        const form = document.getElementById('earlyAccessForm');
-        if (form) {
-            form.parentNode.insertBefore(displayArea, form.nextSibling);
-        } else {
-            document.body.appendChild(displayArea);
-        }
+// Setup form submission
+function setupForm() {
+    const form = document.getElementById('earlyAccessForm');
+    if (!form) {
+        console.error('Form not found!');
+        return;
     }
     
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        console.log('Form submitted!');
+        
+        // Get values
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const birthYear = document.getElementById('birthYear').value;
+        
+        // Validate
+        if (!name || !email) {
+            alert('Please enter name and email');
+            return false;
+        }
+        
+        if (!email.includes('@') || !email.includes('.')) {
+            alert('Please enter a valid email');
+            return false;
+        }
+        
+        // Create data object
+        const data = {
+            name: name,
+            email: email,
+            birthYear: birthYear || 'Not provided',
+            timestamp: new Date().toLocaleString(),
+            date: new Date().toISOString()
+        };
+        
+        console.log('Data to save:', data);
+        
+        // Save to localStorage
+        saveData(data);
+        
+        // Show success
+        alert('✅ Thank you ' + name + '!\n\nYou are now on the Shiva Netra Lite early access list.');
+        
+        // Reset form
+        form.reset();
+        
+        // Show updated data
+        showData();
+        
+        return false;
+    };
+}
+
+// Save data to localStorage
+function saveData(newData) {
+    // Get existing data
+    let allData = JSON.parse(localStorage.getItem('shivaData') || '[]');
+    
+    // Add new data at beginning
+    allData.unshift(newData);
+    
+    // Keep only last 100 entries
+    if (allData.length > 100) {
+        allData = allData.slice(0, 100);
+    }
+    
+    // Save back
+    localStorage.setItem('shivaData', JSON.stringify(allData));
+    
+    console.log('Data saved. Total entries:', allData.length);
+}
+
+// Display data on page
+function showData() {
+    const output = document.getElementById('dataOutput');
+    if (!output) return;
+    
+    // Get data
+    const data = JSON.parse(localStorage.getItem('shivaData') || '[]');
+    
     if (data.length === 0) {
-        displayArea.innerHTML = '<p style="color:#666;text-align:center;">No submissions yet. Be the first!</p>';
+        output.innerHTML = '<p style="color:#666;">No data yet. Submit the form above.</p>';
         return;
     }
     
     // Build HTML
-    let html = '<h3 style="color:#4c51bf;margin-top:0;">📊 Recent Submissions</h3>';
+    let html = '<p style="color:#333;font-weight:bold;">Total entries: ' + data.length + '</p>';
     
-    data.forEach(item => {
+    data.forEach((item, index) => {
         html += `
-            <div style="border-left:4px solid #667eea;padding:10px 15px;margin:10px 0;background:#f9fafb;">
-                <div style="font-weight:bold;color:#333;">${item.name}</div>
-                <div style="color:#666;font-size:14px;">Email: ${item.email}</div>
-                <div style="color:#666;font-size:14px;">Year: ${item.birthYear || 'Not provided'}</div>
-                <div style="color:#888;font-size:12px;margin-top:5px;">${item.timestamp}</div>
+            <div class="data-item">
+                <strong>${index + 1}. ${item.name}</strong><br>
+                <small>Email: ${item.email}</small><br>
+                <small>Year: ${item.birthYear}</small><br>
+                <small style="color:#888;">${item.timestamp}</small>
             </div>
         `;
     });
     
-    html += `<p style="text-align:center;color:#666;">Total: ${data.length} submission(s)</p>`;
-    html += '<button onclick="clearAllData()" style="background:#ef4444;color:white;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;">Clear All Data</button>';
-    
-    displayArea.innerHTML = html;
+    output.innerHTML = html;
 }
 
-// Clear data function
+// Clear all data
 function clearAllData() {
-    if (confirm('Clear all saved data?')) {
-        localStorage.removeItem('shivaNetraSubmissions');
-        displayData();
-        alert('Data cleared!');
+    if (confirm('Are you sure you want to delete ALL data?')) {
+        localStorage.removeItem('shivaData');
+        showData();
+        alert('All data cleared!');
     }
 }
 
-// Make function global
+// Make function globally available
 window.clearAllData = clearAllData;
 
-console.log('✅ Shiva Netra ready! Use clearAllData() to reset.');
+console.log('Shiva Netra Lite ready! Use clearAllData() to reset.');
