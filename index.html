@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
     
     <!-- Meta Tags for SEO & Protection -->
     <meta name="description" content="Free basic numerology guidance. Experience a glimpse of Shiva Netra's wisdom. Advanced features coming soon in Pro version.">
-    <meta name="keywords" content="numerology, spiritual guidance, free numerology, life path, destiny number">
+    <meta name="keywords" content="numerology, spiritual guidance, free numerology, life path, destiny number, daily forecast">
     <meta name="author" content="Shiva Netra">
     <meta name="copyright" content="© 2024 Shiva Netra. Advanced algorithms protected.">
     
@@ -34,7 +35,7 @@
                     <i class="fas fa-eye"></i>
                     <h1>Shiva Netra <span class="lite-badge">LITE</span></h1>
                 </div>
-                <p class="tagline">Free Basic Numerology Guidance</p>
+                <p class="tagline">Free Numerology & Daily Guidance</p>
                 <p class="pro-teaser">✨ <a href="#waitlist">Advanced Pro Version Coming Soon</a></p>
             </div>
         </div>
@@ -44,14 +45,14 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h2>Experience Basic Numerology Guidance</h2>
-                <p>Get a glimpse of the wisdom that awaits in <strong>Shiva Netra Pro</strong></p>
+                <h2>Get Daily Numerology Forecasts</h2>
+                <p>Discover your day's energy, warnings, and lucky elements</p>
                 <div class="cta-buttons">
                     <button class="btn-primary" id="startReadingBtn">
                         <i class="fas fa-calculator"></i> Start Free Reading
                     </button>
-                    <a href="#features" class="btn-secondary">
-                        <i class="fas fa-star"></i> See Features
+                    <a href="#dailyForecast" class="btn-secondary">
+                        <i class="fas fa-calendar-day"></i> Today's Forecast
                     </a>
                 </div>
             </div>
@@ -60,6 +61,104 @@
 
     <!-- Main App -->
     <main class="container">
+        <!-- Daily Forecast Card -->
+        <div class="card sacred-card" id="dailyForecast">
+            <div class="card-header">
+                <i class="fas fa-calendar-check"></i>
+                <h3>Today's Cosmic Forecast</h3>
+                <span class="badge-free">DAILY</span>
+            </div>
+            <div class="card-content">
+                <div class="forecast-summary">
+                    <div class="day-rating">
+                        <div class="rating-stars" id="dayStars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="rating-text" id="dayRatingText">Excellent Day!</span>
+                    </div>
+                    
+                    <div class="forecast-details">
+                        <div class="forecast-item">
+                            <i class="fas fa-bolt"></i>
+                            <div class="forecast-info">
+                                <span class="forecast-label">Energy Level</span>
+                                <span class="forecast-value" id="energyLevel">High</span>
+                            </div>
+                        </div>
+                        
+                        <div class="forecast-item">
+                            <i class="fas fa-coins"></i>
+                            <div class="forecast-info">
+                                <span class="forecast-label">Money Luck</span>
+                                <span class="forecast-value" id="moneyLuck">Excellent</span>
+                            </div>
+                        </div>
+                        
+                        <div class="forecast-item">
+                            <i class="fas fa-heart"></i>
+                            <div class="forecast-info">
+                                <span class="forecast-label">Love Energy</span>
+                                <span class="forecast-value" id="loveEnergy">Romantic</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="forecast-warnings">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Today's Warnings</h4>
+                    <ul id="warningsList">
+                        <li>Be careful of minor injuries</li>
+                        <li>Avoid lending money today</li>
+                        <li>Think before speaking in meetings</li>
+                    </ul>
+                </div>
+                
+                <div class="forecast-advice">
+                    <div class="advice-box">
+                        <i class="fas fa-plane"></i>
+                        <div>
+                            <strong>Travel:</strong> <span id="travelAdvice">Good for short trips</span>
+                        </div>
+                    </div>
+                    <div class="advice-box">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <strong>Social:</strong> <span id="socialAdvice">Meet new people cautiously</span>
+                        </div>
+                    </div>
+                    <div class="advice-box">
+                        <i class="fas fa-cloud-sun"></i>
+                        <div>
+                            <strong>Weather Vibe:</strong> <span id="weatherVibe">Partly cloudy emotions</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lucky-section">
+                    <h4><i class="fas fa-clover"></i> Lucky Elements</h4>
+                    <div class="lucky-items">
+                        <span class="lucky-tag"><i class="fas fa-gem"></i> Color: <span id="luckyColor">Blue</span></span>
+                        <span class="lucky-tag"><i class="fas fa-clock"></i> Time: <span id="luckyTime">2-4 PM</span></span>
+                        <span class="lucky-tag"><i class="fas fa-utensils"></i> Food: <span id="luckyFood">Spicy</span></span>
+                        <span class="lucky-tag"><i class="fas fa-music"></i> Direction: <span id="luckyDirection">East</span></span>
+                    </div>
+                </div>
+                
+                <button class="btn-refresh-forecast" id="refreshForecastBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh Today's Forecast
+                </button>
+                
+                <div class="forecast-note">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Forecast updates daily at midnight. Refresh for instant new insights!</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Basic Calculator Card -->
         <div class="card sacred-card" id="calculatorCard">
             <div class="card-header">
@@ -75,7 +174,39 @@
                 
                 <div class="form-group">
                     <label for="birthDate"><i class="fas fa-calendar-alt"></i> Birth Date</label>
-                    <input type="date" id="birthDate">
+                    <div class="date-selector">
+                        <div class="date-dropdowns">
+                            <select id="birthDay" class="date-dropdown">
+                                <option value="">Day</option>
+                                <!-- Days 1-31 filled by JavaScript -->
+                            </select>
+                            <select id="birthMonth" class="date-dropdown">
+                                <option value="">Month</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <select id="birthYear" class="date-dropdown">
+                                <option value="">Year</option>
+                                <!-- Years 1900-2024 filled by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="quick-year-buttons">
+                            <button type="button" class="year-btn" data-decade="1990">90s</button>
+                            <button type="button" class="year-btn" data-decade="1980">80s</button>
+                            <button type="button" class="year-btn" data-decade="1970">70s</button>
+                            <button type="button" class="year-btn" data-decade="2000">00s</button>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="pro-note">
@@ -100,13 +231,13 @@
                     <div class="result-box">
                         <div class="result-label">Life Path Number</div>
                         <div class="result-value" id="lifePathValue">-</div>
-                        <div class="result-desc" id="lifePathDesc">Basic calculation</div>
+                        <div class="result-desc" id="lifePathDesc">Your life's journey</div>
                     </div>
                     
                     <div class="result-box">
                         <div class="result-label">Destiny Number</div>
                         <div class="result-value" id="destinyValue">-</div>
-                        <div class="result-desc" id="destinyDesc">Name-based analysis</div>
+                        <div class="result-desc" id="destinyDesc">Your soul's purpose</div>
                     </div>
                 </div>
                 
@@ -163,6 +294,12 @@
                 </div>
                 
                 <div class="comparison-row">
+                    <div class="feature-name">Daily Forecasts</div>
+                    <div class="feature-lite">Basic daily insights</div>
+                    <div class="feature-pro">Personalized hour-by-hour</div>
+                </div>
+                
+                <div class="comparison-row">
                     <div class="feature-name">Numbers Calculated</div>
                     <div class="feature-lite">2 basic numbers</div>
                     <div class="feature-pro">15+ detailed numbers</div>
@@ -193,15 +330,9 @@
                 </div>
                 
                 <div class="comparison-row">
-                    <div class="feature-name">Data Privacy</div>
-                    <div class="feature-lite">Local storage only</div>
-                    <div class="feature-pro">Encrypted cloud storage</div>
-                </div>
-                
-                <div class="comparison-row">
-                    <div class="feature-name">Support</div>
-                    <div class="feature-lite">Community help</div>
-                    <div class="feature-pro">Priority email support</div>
+                    <div class="feature-name">Warnings & Alerts</div>
+                    <div class="feature-lite">General daily warnings</div>
+                    <div class="feature-pro">Personalized danger alerts</div>
                 </div>
                 
                 <div class="comparison-row highlight">
@@ -278,17 +409,17 @@
                 
                 <div class="footer-links">
                     <h4>Quick Links</h4>
-                    <a href="#features">Features</a>
+                    <a href="#dailyForecast">Today's Forecast</a>
+                    <a href="#calculatorCard">Calculator</a>
                     <a href="#waitlist">Pro Waitlist</a>
                     <a href="#" id="aboutBtn">About</a>
-                    <a href="#" id="privacyBtn">Privacy</a>
                 </div>
                 
                 <div class="footer-legal">
                     <h4>Legal & Protection</h4>
                     <p>© 2024 Shiva Netra. All rights reserved.</p>
                     <p class="legal-notice">Advanced algorithms and proprietary systems are protected intellectual property.</p>
-                    <p class="version">Lite Version: 1.0.0 | Pro Version: Coming Soon</p>
+                    <p class="version">Lite Version: 1.1.0 | Pro Version: Coming Soon</p>
                 </div>
             </div>
             
